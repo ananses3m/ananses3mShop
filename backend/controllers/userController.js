@@ -1,6 +1,7 @@
 import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
+import sendEmail from '../utils/sendEmails.js';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -85,7 +86,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (user) {
         user.name = req.body.name || user.name
         user.email = req.body.email || user.email
-        if(req.body.password) {
+        if (req.body.password) {
             user.password = req.body.password
         }
 
@@ -117,10 +118,10 @@ const getUsers = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 const deleteUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
-    
+
     if (user) {
         await user.remove();
-        res.json({message: 'User deleted'})
+        res.json({ message: 'User deleted' })
     } else {
         res.status(404);
         throw new Error('User not found');
@@ -166,5 +167,38 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 })
 
+// @desc    Auth user & send email
+// @route   POST /api/users/resetpassword
+// @access  Public
+const getUserByEmail = asyncHandler(async (req, res) => {
+    const { email } = req.body;
 
-export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser };
+    const validateEmail = (theEmail) => {
+        const re = /^\S+@\S+$/;
+        return re.test(theEmail);
+    }
+
+    if (email === '' || !validateEmail(email)) {
+        res.status(500);
+        throw new Error('Please enter a valid email address');
+    }
+
+    const user = await User.findOne({ email }).select('-password');
+
+    if (user) {
+        sendEmail({
+            subject: "Test2",
+            html: `
+                <p>Click this <a href="https://byuibroadcastaudio.herokuapp.com/auth/reset/${token}">link</a> to set a new password</p>
+            `,
+            to: email,
+            from: process.env.EMAIL
+        });
+    } else {
+        res.status(404);
+        throw new Error('No account with this email address');
+    }
+})
+
+
+export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, getUserByEmail };

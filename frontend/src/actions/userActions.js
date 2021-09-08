@@ -22,7 +22,10 @@ import {
     USER_DELETE_FAIL,
     USER_UPDATE_REQUEST,
     USER_UPDATE_SUCCESS,
-    USER_UPDATE_FAIL
+    USER_UPDATE_FAIL,
+    USER_PASSWORD_RESET_EMAIL_REQUEST,
+    USER_PASSWORD_RESET_EMAIL_SUCCESS,
+    USER_PASSWORD_RESET_EMAIL_FAIL
 } from '../constants/userConstants';
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants';
 import axios from 'axios';
@@ -216,6 +219,28 @@ export const updateUser = (user) => async (dispatch, getState) => {
     } catch (error) {
         dispatch({
             type: USER_UPDATE_FAIL,
+            payload: error.response && error.response.data.message ? error.response.data.message : error.message
+        })
+    }
+}
+
+export const passwordResetEmail = (email) => async (dispatch) => {
+    try {
+        dispatch({ type: USER_PASSWORD_RESET_EMAIL_REQUEST })
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        await axios.post('/api/users/resetpassword', { email }, config)
+
+        dispatch({ type: USER_PASSWORD_RESET_EMAIL_SUCCESS })
+
+    } catch (error) {
+        dispatch({
+            type: USER_PASSWORD_RESET_EMAIL_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
     }
