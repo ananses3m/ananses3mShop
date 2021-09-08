@@ -27,6 +27,9 @@ import {
     USER_PASSWORD_RESET_EMAIL_REQUEST,
     USER_PASSWORD_RESET_EMAIL_SUCCESS,
     USER_PASSWORD_RESET_EMAIL_FAIL,
+    USER_SET_NEW_PASSWORD_REQUEST,
+    USER_SET_NEW_PASSWORD_SUCCESS,
+    USER_SET_NEW_PASSWORD_FAIL,
 } from '../constants/userConstants';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -133,8 +136,21 @@ export const userPasswordResetEmailReducer = (state = {}, action) => {
         case USER_PASSWORD_RESET_EMAIL_REQUEST:
             return { loading: true }
         case USER_PASSWORD_RESET_EMAIL_SUCCESS:
-            return { loading: false, userInfo: action.payload }
+            return { loading: false, success: true, userInfo: action.payload }
         case USER_PASSWORD_RESET_EMAIL_FAIL:
+            return { loading: false, error: action.payload }
+        default:
+            return state
+    }
+}
+
+export const userSetNewPasswordReducer = (state = {}, action) => {
+    switch (action.type) {
+        case USER_SET_NEW_PASSWORD_REQUEST:
+            return { loading: true }
+        case USER_SET_NEW_PASSWORD_SUCCESS:
+            return { loading: false, success: true, userInfo: action.payload }
+        case USER_SET_NEW_PASSWORD_FAIL:
             return { loading: false, error: action.payload }
         default:
             return state

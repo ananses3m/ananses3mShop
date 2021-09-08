@@ -168,7 +168,7 @@ const updateUser = asyncHandler(async (req, res) => {
 })
 
 // @desc    Auth user & send email
-// @route   POST /api/users/resetpassword
+// @route   GET /api/users/resetpassword
 // @access  Public
 const getUserByEmail = asyncHandler(async (req, res) => {
     const { email } = req.body;
@@ -187,13 +187,15 @@ const getUserByEmail = asyncHandler(async (req, res) => {
 
     if (user) {
         sendEmail({
-            subject: "Test2",
+            subject: "Ananses3m Wear account password reset",
             html: `
-                <p>Click this <a href="https://byuibroadcastaudio.herokuapp.com/auth/reset/${token}">link</a> to set a new password</p>
+                <p>Click this <a href="https://byuibroadcastaudio.herokuapp.com/auth/reset/\${token}">link</a> to set a new password</p>
             `,
             to: email,
             from: process.env.EMAIL
         });
+
+        res.status(200).json({ message: `Reset link sent to ${email}`});
     } else {
         res.status(404);
         throw new Error('No account with this email address');
