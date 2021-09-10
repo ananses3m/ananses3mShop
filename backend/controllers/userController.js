@@ -64,7 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
-    console.log('Auth token: ', req.headers.authorization)
+    // console.log('Auth token: ', req.headers.authorization)
 
     if (user) {
         res.json({
@@ -193,12 +193,12 @@ const getUserByEmail = asyncHandler(async (req, res) => {
 
         const token = jwt.sign({ id }, mySecret, { expiresIn: '30s' });
         const decoded = jwt.verify(token, mySecret);
+
         sendEmail({
             subject: "Ananses3m Wear account password reset",
             html: `
-            /**<p>Click this <a href="https://ananses3m.herokuapp.com/reset/${decoded.id}/${token}">link</a> to set a new password</p>**/
-                <p>Click this <a href="http://localhost:3000/reset/${decoded.id}/${token}">link</a> to set a new password</p>
-                <strong><p>Please note that this link expires in 30 seconds</p></strong>
+                <p>Click this <a href="https://ananses3m.herokuapp.com/reset/${decoded.id}/${token}">link</a> to set a new password</p>
+                <strong><h1>Please note that this link expires in 30 seconds</h1></strong>
             `,
             to: email,
             from: process.env.EMAIL
