@@ -35,7 +35,7 @@ const App = () => {
           <Route path='/register' component={RegisterScreen} />
           <Route path='/profile' component={ProfileScreen} />
           <Route path='/resetpassword' component={ResetPasswordScreen} />
-          <Route path='/setnewpassword' component={SetNewPasswordScreen} />
+          <Route path='/reset/:id/:token' component={SetNewPasswordScreen} />
           <Route path='/product/:id' component={ProductScreen} />
           <Route path='/cart/:id?' component={CartScreen} />
           <Route path='/admin/userlist' component={UserListScreen} />

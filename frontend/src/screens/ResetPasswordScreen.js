@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -6,7 +6,7 @@ import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { passwordResetEmail } from '../actions/userActions';
 
-const ResetPasswordScreen = ({ history }) => {
+const ResetPasswordScreen = () => {
     const [email, setEmail] = useState('');
     const [message, setMessage] = useState(null);
 
@@ -15,14 +15,15 @@ const ResetPasswordScreen = ({ history }) => {
     const userPasswordResetEmail = useSelector(state => state.userPasswordResetEmail);
     const { loading, error, success } = userPasswordResetEmail;
 
+    useEffect(() => {
+        if (email && success) {
+            setMessage('Check your inbox for password reset link');
+        }
+    }, [email, success])
+
     const submitHandler = (e) => {
         e.preventDefault();
         dispatch(passwordResetEmail(email))
-
-        if (success) {
-            setMessage('Check your inbox for password reset link')
-        }
-        history.push('/login')
     }
 
     return (

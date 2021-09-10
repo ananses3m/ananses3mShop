@@ -1,46 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import { setNewPassword } from '../actions/userActions';
+import { updatePassword } from '../actions/userActions';
 
-const SetNewPasswordScreen = ({ history }) => {
+const SetNewPasswordScreen = ({ match, history }) => {
+    const userId = match.params.id;
+
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [message, setMessage] = useState('');
 
     const dispatch = useDispatch();
 
-    const userDetails = useSelector(state => state.userDetails);
-    const { loading, error } = userDetails;
-    // const { loading, error, user } = userDetails;
-
-    const userUpdateProfile = useSelector(state => state.userUpdateProfile);
-    const { success } = userUpdateProfile;
+    const userUpdatePassword = useSelector(state => state.userUpdatePassword);
+    const { loading, error, success, user } = userUpdatePassword;
 
 
-    // useEffect(() => {
-    //     if (!userInfo) {
-    //         history.push('/login')
-    //     } else {
-    //         if (!user.name) {
-    //             dispatch(getUserDetails('profile'))
-    //             dispatch(listMyOrders())
-    //         } else {
-    //             setName(user.name)
-    //             setEmail(user.email)
-    //         }
-    //     }
-    // }, [dispatch, history, userInfo, user])
+    useEffect(() => {
+        if (success) {
+            history.push(`/login`);
+        }
+    }, [dispatch, history, user, success, error])
 
     const submitHandler = (e) => {
         e.preventDefault();
         if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
-            dispatch(setNewPassword({ password }))
+            dispatch(updatePassword({ id: userId, password }, match.params.token))
         }
     }
 

@@ -4,7 +4,6 @@ import User from '../models/userModel.js';
 
 const protect = asyncHandler(async (req, res, next) => {
     let token;
-
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         try {
             token = req.headers.authorization.split(' ')[1];
@@ -17,7 +16,35 @@ const protect = asyncHandler(async (req, res, next) => {
         } catch (error) {
             console.error(error);
             res.status(401);
-            throw new Error('Not authorized, token failed');
+            throw new Error('Not authorized. Invalid token.');
+        }
+    }
+
+    if (!token) {
+        res.status(401);
+        throw new Error('Not authorized, no token');
+    }
+})
+
+const protectR = asyncHandler(async (req, res, next) => {
+    let token;
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+        try {
+            token = req.headers.authorization.split(' ')[1];
+            let userId = req.params.id;
+            let user = await User.findById(userId);
+
+            const mySecret = `${user.password}-${user.createdAt}`;
+
+            const decoded = jwt.verify(token, mySecret);
+
+            req.user = await User.findById(decoded.id);
+
+            next();
+        } catch (error) {
+            console.error(error);
+            res.status(401);
+            throw new Error('Not authorized. Invalid token.');
         }
     }
 
@@ -36,4 +63,4 @@ const admin = (req, res, next) => {
     }
 }
 
-export { protect, admin }
+export { protect, protectR, admin }

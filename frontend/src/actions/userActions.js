@@ -26,9 +26,9 @@ import {
     USER_PASSWORD_RESET_EMAIL_REQUEST,
     USER_PASSWORD_RESET_EMAIL_SUCCESS,
     USER_PASSWORD_RESET_EMAIL_FAIL,
-    USER_SET_NEW_PASSWORD_REQUEST,
-    USER_SET_NEW_PASSWORD_SUCCESS,
-    USER_SET_NEW_PASSWORD_FAIL,
+    USER_UPDATE_PASSWORD_REQUEST,
+    USER_UPDATE_PASSWORD_SUCCESS,
+    USER_UPDATE_PASSWORD_FAIL,
 } from '../constants/userConstants';
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants';
 import axios from 'axios';
@@ -127,6 +127,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 
 export const updateUserProfile = (user) => async (dispatch, getState) => {
     try {
+        console.log('Conroller User: ', user)
         dispatch({ type: USER_UPDATE_PROFILE_REQUEST })
 
         const { userLogin: { userInfo } } = getState()
@@ -233,13 +234,14 @@ export const passwordResetEmail = (email) => async (dispatch) => {
 
         const config = {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
         }
 
-        await axios.get('/api/users/resetpassword', { email }, config)
+        const { data } = await axios.post('/api/users/resetpassword', { email }, config)
 
-        dispatch({ type: USER_PASSWORD_RESET_EMAIL_SUCCESS })
+
+        dispatch({ type: USER_PASSWORD_RESET_EMAIL_SUCCESS, payload: data })
 
     } catch (error) {
         dispatch({
@@ -249,28 +251,26 @@ export const passwordResetEmail = (email) => async (dispatch) => {
     }
 }
 
-export const setNewPassword = (user) => async (dispatch, getState) => {
+export const updatePassword = (user, token) => async (dispatch) => {
     try {
-        dispatch({ type: USER_SET_NEW_PASSWORD_REQUEST })
-
-        const { userLogin: { userInfo } } = getState()
+        dispatch({ type: USER_UPDATE_PASSWORD_REQUEST })
 
         const config = {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`,
+                Authorization: `Bearer ${token}`,
             }
         }
 
-        const { data } = await axios.put(`/api/users/profile`, user, config)
+        const { data } = await axios.put(`/api/users/reset/${user.id}`, user, config)
 
         dispatch({
-            type: USER_SET_NEW_PASSWORD_SUCCESS,
+            type: USER_UPDATE_PASSWORD_SUCCESS,
             payload: data,
         })
     } catch (error) {
         dispatch({
-            type: USER_SET_NEW_PASSWORD_FAIL,
+            type: USER_UPDATE_PASSWORD_FAIL,
             payload: error.response && error.response.data.message ? error.response.data.message : error.message
         })
     }

@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
+import { unlink } from 'fs/promises';
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -41,6 +42,16 @@ const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
 
     if (product) {
+        const imagePath = product.image;
+
+        console.log('Image path: ', imagePath);
+        try {
+            await unlink(`${imagePath}`);
+            console.log('successfully deleted /tmp/hello');
+        } catch (error) {
+            console.error('there was an error:', error.message);
+        }
+
         await product.remove();
         res.json({ message: 'Product deleted' });
     } else {

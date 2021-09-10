@@ -2,6 +2,7 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 import sendEmail from '../utils/sendEmails.js';
+import jwt from 'jsonwebtoken';
 
 // @desc    Auth user & get token
 // @route   POST /api/users/login
@@ -63,6 +64,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // @access  Private
 const getUserProfile = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
+    console.log('Auth token: ', req.headers.authorization)
 
     if (user) {
         res.json({
@@ -183,24 +185,67 @@ const getUserByEmail = asyncHandler(async (req, res) => {
         throw new Error('Please enter a valid email address');
     }
 
-    const user = await User.findOne({ email }).select('-password');
+    const user = await User.findOne({ email });
 
     if (user) {
+        const id = user._id
+        const mySecret = `${user.password}-${user.createdAt}`;
+
+        const token = jwt.sign({ id }, mySecret, { expiresIn: '30s' });
+        const decoded = jwt.verify(token, mySecret);
         sendEmail({
             subject: "Ananses3m Wear account password reset",
             html: `
-                <p>Click this <a href="https://byuibroadcastaudio.herokuapp.com/auth/reset/\${token}">link</a> to set a new password</p>
+            /**<p>Click this <a href="https://ananses3m.herokuapp.com/reset/${decoded.id}/${token}">link</a> to set a new password</p>**/
+                <p>Click this <a href="http://localhost:3000/reset/${decoded.id}/${token}">link</a> to set a new password</p>
+                <strong><p>Please note that this link expires in 30 seconds</p></strong>
             `,
             to: email,
             from: process.env.EMAIL
         });
 
-        res.status(200).json({ message: `Reset link sent to ${email}`});
+        res.status(200).json({
+            message: `Reset link sent to ${email}`,
+            token: token
+        });
     } else {
         res.status(404);
         throw new Error('No account with this email address');
     }
 })
 
+// @desc    Auth user & reset password
+// @route   PUT /api/users/reset/:id/:token
+// @access  Private
+const resetUserPassword = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.body.id);
 
-export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers, deleteUser, getUserById, updateUser, getUserByEmail };
+    if (user) {
+        user.password = req.body.password
+
+        const updatedUser = await user.save();
+
+        res.json({
+            _id: updatedUser._id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isAdmin: updatedUser.isAdmin,
+            token: generateToken(updatedUser._id),
+        });
+    } else {
+        res.status(404);
+        throw new Error('User not found. Please try again');
+    }
+})
+
+
+export {
+    authUser,
+    getUserProfile,
+    registerUser,
+    updateUserProfile,
+    getUsers,
+    deleteUser,
+    getUserById,
+    updateUser, getUserByEmail, resetUserPassword
+};
