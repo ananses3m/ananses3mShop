@@ -194,6 +194,9 @@ const getUserByEmail = asyncHandler(async (req, res) => {
         const token = jwt.sign({ id }, mySecret, { expiresIn: '30s' });
         const decoded = jwt.verify(token, mySecret);
 
+
+        // <p>Click this <a href="http://localhost:3000/reset/${decoded.id}/${token}">link</a> to set a new password</p>
+
         sendEmail({
             subject: "Ananses3m Wear account password reset",
             html: `
