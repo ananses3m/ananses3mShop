@@ -1,6 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
-import { unlink } from 'fs/promises';
+import cloudinary from '../config/cloudinary.js';
 
 // @desc    Fetch all products
 // @route   GET /api/products
@@ -42,14 +42,13 @@ const deleteProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id)
 
     if (product) {
-        const imagePath = product.image;
+        const imagePath = product.cloudinaryId;
 
-        console.log('Image path: ', imagePath);
         try {
-            await unlink(`${imagePath}`);
-            console.log('successfully deleted /tmp/hello');
+            await cloudinary.uploader.destroy(imagePath);
+            console.log('Successfully deleted image', imagePath);
         } catch (error) {
-            console.error('there was an error:', error.message);
+            console.error('there was an error:', error.message.data);
         }
 
         await product.remove();
@@ -69,6 +68,7 @@ const createProduct = asyncHandler(async (req, res) => {
         price: 0,
         user: req.user._id,
         image: '/images/sample.jpg',
+        cloudinaryId: 'sample_id-227463848',
         brand: 'Sample brand',
         category: 'Sample category',
         countInStock: 0,
@@ -88,6 +88,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         name,
         price,
         image,
+        cloudinaryId,
         brand,
         category,
         countInStock,
@@ -101,6 +102,7 @@ const updateProduct = asyncHandler(async (req, res) => {
         product.price = price
         product.description = description
         product.image = image
+        product.cloudinaryId = cloudinaryId
         product.brand = brand
         product.category = category
         product.countInStock = countInStock

@@ -15,6 +15,7 @@ const ProductEditScreen = ({ match, history }) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState(0);
     const [image, setImage] = useState('');
+    const [cloudinaryId, setCloudinaryId] = useState('');
     const [brand, setBrand] = useState('');
     const [category, setCategory] = useState('');
     const [countInStock, setCountInStock] = useState(0);
@@ -40,6 +41,7 @@ const ProductEditScreen = ({ match, history }) => {
                 setName(product.name);
                 setPrice(product.price);
                 setImage(product.image);
+                setCloudinaryId(product.cloudinaryId);
                 setCategory(product.category);
                 setBrand(product.brand);
                 setCountInStock(product.countInStock);
@@ -49,6 +51,34 @@ const ProductEditScreen = ({ match, history }) => {
 
     }, [dispatch, history, productId, product, successUpdate])
 
+    // Cloudinary configuration
+    // const uploadFileHandler = async (e) => {
+    //     const file = e.target.files[0];
+    //     const reader = new FileReader();
+    //     reader.readAsDataURL(file);
+    //     setUploading(true);
+
+    //     reader.onloadend = async () => {
+    //         try {
+    //             const config = {
+    //                 headers: {
+    //                     'Content-Type': 'application/json'
+    //                 }
+    //             }
+    
+    //             const { data } = await axios.post('/api/upload', { imageString: reader.result }, config);
+                
+    //             console.log('Data Image: ', data)
+    //             setImage(data.public_id);
+    //             setUploading(false);
+    //         } catch (error) {
+    //             console.error('Product Edit: ', error.response.data);
+    //             setUploading(false);
+    //         }
+    //     };
+    // }
+
+    // Multer configuration
     const uploadFileHandler = async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();
@@ -63,8 +93,10 @@ const ProductEditScreen = ({ match, history }) => {
             }
 
             const { data } = await axios.post('/api/upload', formData, config);
+            console.log('Data Front: ', data)
 
-            setImage(data);
+            setImage(data.secure_url);
+            setCloudinaryId(data.public_id);
             setUploading(false);
         } catch (error) {
             console.error(error);
@@ -74,7 +106,7 @@ const ProductEditScreen = ({ match, history }) => {
 
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(updateProduct({ _id: productId, name, price, image, brand, category, description, countInStock }));
+        dispatch(updateProduct({ _id: productId, name, price, image, cloudinaryId, brand, category, description, countInStock }));
     }
 
     return (
@@ -101,6 +133,10 @@ const ProductEditScreen = ({ match, history }) => {
                             <Form.Control type='text' placeholder='Enter image url' value={image} onChange={(e) => setImage(e.target.value)}></Form.Control>
                             <Form.File id='image-file' label='Choose File' custom onChange={uploadFileHandler}></Form.File>
                             {uploading && <Loader />}
+                        </Form.Group>
+
+                        <Form.Group controlId='cloudinaryId'>
+                            <Form.Control type='text' hidden value={cloudinaryId} onChange={(e) => setCloudinaryId(e.target.value)} ></Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='brand'>
