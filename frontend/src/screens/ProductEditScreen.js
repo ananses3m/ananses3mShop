@@ -93,7 +93,6 @@ const ProductEditScreen = ({ match, history }) => {
             }
 
             const { data } = await axios.post('/api/upload', formData, config);
-            console.log('Data Front: ', data)
 
             setImage(data.secure_url);
             setCloudinaryId(data.public_id);

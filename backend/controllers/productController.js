@@ -46,7 +46,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
 
         try {
             await cloudinary.uploader.destroy(imagePath);
-            console.log('Successfully deleted image', imagePath);
+            // console.log('Successfully deleted image', imagePath);
         } catch (error) {
             console.error('there was an error:', error.message.data);
         }

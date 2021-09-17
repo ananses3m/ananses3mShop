@@ -32,7 +32,7 @@ const upload = multer({
 router.post('/', upload.single('image'), async (req, res) => {
     try {
         const result = await cloudinary.uploader.upload(req.file.path, {
-            upload_preset: 'dev_setups',
+            upload_preset: 'store_uploads',
         })
         res.json(result);
     } catch (error) {
