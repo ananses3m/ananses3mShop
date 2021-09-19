@@ -6,10 +6,6 @@ import breakpoint from '../breakpoints';
 import blackgirlImage from '../profileImages/blackgirl.jpg';
 import blackboyImage from '../profileImages/blackboy.jpg';
 
-const PanelContent = styled.div`
-    // text-align: center;
-`;
-
 const TabContent = styled.p`
     @media only screen and ${breakpoint.device.xs}{
         font-size: .9rem;
@@ -31,7 +27,7 @@ const MainWrapper = styled.div`
 `;
 
 const AboutTextWrapper = styled.div`
-    
+    // Present for flex property reasons
 `;
 
 const ImageWrapper = styled.img`
@@ -78,7 +74,6 @@ const AffiliatesMenu = () => {
             </TabList>
 
             <TabPanel>
-                <PanelContent>
                     <MainWrapper>
                         <AboutTextWrapper>
                             <h1>The text and link here</h1>
@@ -87,10 +82,8 @@ const AffiliatesMenu = () => {
                             <ImageWrapper src={blackgirlImage} alt="Black Girl Picture" />
                         </AboutPicWrapper>
                     </MainWrapper>
-                </PanelContent>
             </TabPanel>
             <TabPanel>
-                <PanelContent>
                     <MainWrapper>
                         <AboutTextWrapper>
                             <h1>Some cool text and link here</h1>
@@ -99,10 +92,8 @@ const AffiliatesMenu = () => {
                             <ImageWrapper src={blackboyImage} alt="Black Boy Picture" />
                         </AboutPicWrapper>
                     </MainWrapper>
-                </PanelContent>
             </TabPanel>
             <TabPanel>
-                <PanelContent>
                     <MainWrapper>
                         <AboutTextWrapper>
                             <h1>Shege Pink text and link here</h1>
@@ -111,10 +102,8 @@ const AffiliatesMenu = () => {
                             <ImageWrapper src={blackgirlImage} alt="Black Girl Picture" />
                         </AboutPicWrapper>
                     </MainWrapper>
-                </PanelContent>
             </TabPanel>
             <TabPanel>
-                <PanelContent>
                     <MainWrapper>
                         <AboutTextWrapper>
                             <h1>The text and link here</h1>
@@ -123,10 +112,8 @@ const AffiliatesMenu = () => {
                             <ImageWrapper src={blackboyImage} alt="Black Boy Picture" />
                         </AboutPicWrapper>
                     </MainWrapper>
-                </PanelContent>
             </TabPanel>
             <TabPanel>
-                <PanelContent>
                     <MainWrapper>
                         <AboutTextWrapper>
                             <h1>The text and link here</h1>
@@ -135,7 +122,6 @@ const AffiliatesMenu = () => {
                             <ImageWrapper src={blackgirlImage} alt="Black Girl Picture" />
                         </AboutPicWrapper>
                     </MainWrapper>
-                </PanelContent>
             </TabPanel>
         </Tabs>
     );

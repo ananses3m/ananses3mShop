@@ -29,7 +29,7 @@ const HomeScreen = ({ match }) => {
     return (
         <>
             <Meta />
-            {!keyword ? <ProductCarousel /> : <Link to='/' className='btn btn-light'>Go Back</Link>} <br/>
+            {!keyword ? <ProductCarousel /> : <Link to='/' className='btn btn-light'>Go Back</Link>} <br />
             {/* <h1>Latest Products</h1>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                 <>
@@ -50,14 +50,12 @@ const HomeScreen = ({ match }) => {
                     {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                         <>
                             <Row>
-                                {products.map((product) => {
-                                    if (product.category.toUpperCase() === 'NEW WELE') {
-                                        return (
-                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                                <Product product={product} />
-                                            </Col>)
-                                    }
-                                })}
+                                {products.filter(product => product.category.toUpperCase() === 'NEW WELE')
+                                    .map((product) => (
+                                        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                            <Product product={product} />
+                                        </Col>
+                                    ))}
                             </Row>
                             <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
                         </>
@@ -67,14 +65,12 @@ const HomeScreen = ({ match }) => {
                     {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                         <>
                             <Row>
-                                {products.map((product) => {
-                                    if (product.category.toUpperCase() === 'T SHIRTS') {
-                                        return (
-                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                                <Product product={product} />
-                                            </Col>)
-                                    }
-                                })}
+                                {products.filter(product => product.category.toUpperCase() === 'T SHIRTS')
+                                    .map((product) => (
+                                        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                            <Product product={product} />
+                                        </Col>
+                                    ))}
                             </Row>
                             <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
                         </>
@@ -84,14 +80,12 @@ const HomeScreen = ({ match }) => {
                     {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                         <>
                             <Row>
-                                {products.map((product) => {
-                                    if (product.category.toUpperCase() === 'LONG SLEEVES / HOODIES') {
-                                        return (
-                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                                <Product product={product} />
-                                            </Col>)
-                                    }
-                                })}
+                                {products.filter(product => product.category.toUpperCase() === 'LONG SLEEVES / HOODIES')
+                                    .map((product) => (
+                                        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                            <Product product={product} />
+                                        </Col>
+                                    ))}
                             </Row>
                             <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
                         </>
@@ -101,14 +95,12 @@ const HomeScreen = ({ match }) => {
                     {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                         <>
                             <Row>
-                                {products.map((product) => {
-                                    if (product.category.toUpperCase() === 'CAP SERIES') {
-                                        return (
-                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                                <Product product={product} />
-                                            </Col>)
-                                    }
-                                })}
+                                {products.filter(product => product.category.toUpperCase() === 'CAP SERIES')
+                                    .map((product) => (
+                                        <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                            <Product product={product} />
+                                        </Col>
+                                    ))}
                             </Row>
                             <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
                         </>
