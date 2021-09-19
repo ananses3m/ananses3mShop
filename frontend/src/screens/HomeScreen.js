@@ -9,6 +9,7 @@ import Paginate from '../components/Paginate';
 import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
 import Services from '../components/Services';
+import Affiliates from '../components/Affiliates';
 import { listProducts } from '../actions/productActions';
 
 const HomeScreen = ({ match }) => {
@@ -117,7 +118,7 @@ const HomeScreen = ({ match }) => {
                     <Services />
                 </Tab>
                 <Tab eventKey="affiliates" title="Affiliates">
-                    <h1>Affiliates Here</h1>
+                    <Affiliates />
                 </Tab>
             </Tabs>
         </>

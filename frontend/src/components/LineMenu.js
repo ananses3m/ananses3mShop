@@ -26,19 +26,19 @@ const LineMenu = () => {
         <Tabs>
             <TabList>
                 <Tab>
-                    <TabContent>Graphic Design</TabContent>
+                    <TabContent><h5>Graphic Design</h5></TabContent>
                 </Tab>
                 <Tab>
-                    <TabContent>Paper Bags</TabContent>
+                    <TabContent><h5>Paper Bags</h5></TabContent>
                 </Tab>
                 <Tab>
-                    <TabContent>Screen Printing</TabContent>
+                    <TabContent><h5>Screen Printing</h5></TabContent>
                 </Tab>
                 <Tab>
-                    <TabContent>Printing</TabContent>
+                    <TabContent><h5>Other Printing</h5></TabContent>
                 </Tab>
                 <Tab>
-                    <TabContent>Embroidery</TabContent>
+                    <TabContent><h5>Others</h5></TabContent>
                 </Tab>
                 {/* <Tab>
                     <TabContent>Rogmoth</TabContent>
@@ -50,26 +50,31 @@ const LineMenu = () => {
 
             <TabPanel>
                 <PanelContent>
+                    <h1>Designs here</h1>
                     {/* <FlexSim /> */}
                 </PanelContent>
             </TabPanel>
             <TabPanel>
                 <PanelContent>
+                    <h1>Content here</h1>
                     {/* <LDSChurch /> */}
                 </PanelContent>
             </TabPanel>
             <TabPanel>
                 <PanelContent>
+                    <h1>Designs Prints here</h1>
                     {/* <BuildingFit /> */}
                 </PanelContent>
             </TabPanel>
             <TabPanel>
                 <PanelContent>
+                    <h1>Designs Images here</h1>
                     {/* <BYUIAudio /> */}
                 </PanelContent>
             </TabPanel>
             <TabPanel>
                 <PanelContent>
+                    <h1>Designs Works here</h1>
                     {/* <ExcessEra /> */}
                 </PanelContent>
             </TabPanel>
