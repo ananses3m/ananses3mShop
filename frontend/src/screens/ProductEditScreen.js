@@ -65,9 +65,9 @@ const ProductEditScreen = ({ match, history }) => {
     //                     'Content-Type': 'application/json'
     //                 }
     //             }
-    
+
     //             const { data } = await axios.post('/api/upload', { imageString: reader.result }, config);
-                
+
     //             console.log('Data Image: ', data)
     //             setImage(data.public_id);
     //             setUploading(false);
@@ -148,9 +148,20 @@ const ProductEditScreen = ({ match, history }) => {
                             <Form.Control type='number' placeholder='Enter count in stock' value={countInStock} onChange={(e) => setCountInStock(e.target.value)}></Form.Control>
                         </Form.Group>
 
-                        <Form.Group controlId='category'>
+                        {/* <Form.Group controlId='category'>
                             <Form.Label>Category</Form.Label>
                             <Form.Control type='text' placeholder='Enter category' value={category} onChange={(e) => setCategory(e.target.value)}></Form.Control>
+                        </Form.Group> */}
+
+                        <Form.Group controlId='category'>
+                            <Form.Label>Category</Form.Label>
+                            <Form.Control as='select' value={category} onChange={(e) => setCategory(e.target.value)}>
+                                <option value=''>Select...</option>
+                                <option value='New Wele'>New Wele</option>
+                                <option value='T Shirts'>T Shirts</option>
+                                <option value='Long Sleeves / Hoodies'>Long Sleeves / Hoodies</option>
+                                <option value='Cap Series'>Cap Series</option>
+                            </Form.Control>
                         </Form.Group>
 
                         <Form.Group controlId='description'>

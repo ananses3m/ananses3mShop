@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Tabs, Tab } from 'react-bootstrap';
 import Product from '../components/Product';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import Paginate from '../components/Paginate';
 import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
+import Services from '../components/Services';
 import { listProducts } from '../actions/productActions';
 
 const HomeScreen = ({ match }) => {
@@ -27,8 +28,8 @@ const HomeScreen = ({ match }) => {
     return (
         <>
             <Meta />
-            {!keyword ? <ProductCarousel /> : <Link to='/' className='btn btn-light'>Go Back</Link>}
-            <h1>Latest Products</h1>
+            {!keyword ? <ProductCarousel /> : <Link to='/' className='btn btn-light'>Go Back</Link>} <br/>
+            {/* <h1>Latest Products</h1>
             {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
                 <>
                     <Row>
@@ -40,8 +41,85 @@ const HomeScreen = ({ match }) => {
                     </Row>
                     <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
                 </>
-            )}
+            )} */}
 
+            <Tabs defaultActiveKey="newArrivals" className="mb-3">
+                <Tab eventKey="newArrivals" title="New Arrivals">
+                    {/* <h1>Latest Products</h1> */}
+                    {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+                        <>
+                            <Row>
+                                {products.map((product) => {
+                                    if (product.category.toUpperCase() === 'NEW WELE') {
+                                        return (
+                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                                <Product product={product} />
+                                            </Col>)
+                                    }
+                                })}
+                            </Row>
+                            <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
+                        </>
+                    )}
+                </Tab>
+                <Tab eventKey="tshirts" title="T Shirts">
+                    {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+                        <>
+                            <Row>
+                                {products.map((product) => {
+                                    if (product.category.toUpperCase() === 'T SHIRTS') {
+                                        return (
+                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                                <Product product={product} />
+                                            </Col>)
+                                    }
+                                })}
+                            </Row>
+                            <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
+                        </>
+                    )}
+                </Tab>
+                <Tab eventKey="longSleeves" title="Long Sleeves">
+                    {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+                        <>
+                            <Row>
+                                {products.map((product) => {
+                                    if (product.category.toUpperCase() === 'LONG SLEEVES / HOODIES') {
+                                        return (
+                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                                <Product product={product} />
+                                            </Col>)
+                                    }
+                                })}
+                            </Row>
+                            <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
+                        </>
+                    )}
+                </Tab>
+                <Tab eventKey="capSeries" title="Cap Series">
+                    {loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : (
+                        <>
+                            <Row>
+                                {products.map((product) => {
+                                    if (product.category.toUpperCase() === 'CAP SERIES') {
+                                        return (
+                                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                                <Product product={product} />
+                                            </Col>)
+                                    }
+                                })}
+                            </Row>
+                            <Paginate pages={pages} page={page} keyword={keyword ? keyword : ''} />
+                        </>
+                    )}
+                </Tab>
+                <Tab eventKey="services" title="Services">
+                    <Services />
+                </Tab>
+                <Tab eventKey="affiliates" title="Affiliates">
+                    <h1>Affiliates Here</h1>
+                </Tab>
+            </Tabs>
         </>
     )
 }
