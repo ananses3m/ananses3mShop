@@ -48,13 +48,13 @@ const PaymentScreen = ({ history }) => {
                             onChange={(e) => setPaymentMethod(e.target.value)}>
                         </Form.Check> */}
 
-                        {/* <Form.Check type='radio'
-                            label='MobileMoney'
+                        <Form.Check type='radio'
+                            label='MTN Mobile Money'
                             id='MobileMoney'
                             name='paymentMethod'
                             value='MobileMoney'
                             onChange={(e) => setPaymentMethod(e.target.value)}>
-                        </Form.Check> */}
+                        </Form.Check>
                     </Col>
                 </Form.Group>
 
