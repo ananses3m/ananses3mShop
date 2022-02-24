@@ -18,12 +18,19 @@ const SetNewPasswordScreen = ({ match, history }) => {
     const userUpdatePassword = useSelector(state => state.userUpdatePassword);
     const { loading, error, success, user } = userUpdatePassword;
 
+    const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
 
     useEffect(() => {
         if (success) {
             history.push(`/login`);
         }
-    }, [dispatch, history, user, success, error])
+
+        if (userInfo) {
+            history.push('/');
+          }
+    }, [dispatch, history, user, success, error, userInfo])
 
     const submitHandler = (e) => {
         e.preventDefault();
