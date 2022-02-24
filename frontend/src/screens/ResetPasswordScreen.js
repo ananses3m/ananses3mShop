@@ -6,42 +6,58 @@ import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 import { passwordResetEmail } from '../actions/userActions';
 
-const ResetPasswordScreen = () => {
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState(null);
+const ResetPasswordScreen = ({ history }) => {
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState(null);
 
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const userPasswordResetEmail = useSelector(state => state.userPasswordResetEmail);
-    const { loading, error, success } = userPasswordResetEmail;
+  const userPasswordResetEmail = useSelector(
+    (state) => state.userPasswordResetEmail
+  );
+  const { loading, error, success } = userPasswordResetEmail;
 
-    useEffect(() => {
-        if (email && success) {
-            setMessage('Check your inbox for password reset link');
-        }
-    }, [email, success])
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
 
-    const submitHandler = (e) => {
-        e.preventDefault();
-        dispatch(passwordResetEmail(email))
+  useEffect(() => {
+    if (userInfo) {
+      history.push('/');
     }
 
-    return (
-        <FormContainer>
-            <h1>Reset Password</h1>
-            {error && <Message variant='danger'>{error}</Message>}
-            {loading && <Loader />}
-            {message && <Message variant='success'>{message}</Message>}
-            <Form onSubmit={submitHandler}>
-                <Form.Group controlId='email'>
-                    <Form.Label>Email Address</Form.Label>
-                    <Form.Control type='email' placeholder='Enter email and check inbox after submission' value={email} onChange={(e) => setEmail(e.target.value)}></Form.Control>
-                </Form.Group>
+    if (email && success) {
+      setMessage('Check your inbox for password reset link');
+    }
+  }, [email, success, userInfo, history]);
 
-                <Button type='submit' variant='primary' className='my-3'>Submit</Button>
-            </Form>
-        </FormContainer>
-    )
-}
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(passwordResetEmail(email));
+  };
 
-export default ResetPasswordScreen
+  return (
+    <FormContainer>
+      <h1>Reset Password</h1>
+      {error && <Message variant="danger">{error}</Message>}
+      {loading && <Loader />}
+      {message && <Message variant="success">{message}</Message>}
+      <Form onSubmit={submitHandler}>
+        <Form.Group controlId="email">
+          <Form.Label>Email Address</Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Enter email and check inbox after submission"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
+
+        <Button type="submit" variant="primary" className="my-3">
+          Submit
+        </Button>
+      </Form>
+    </FormContainer>
+  );
+};
+
+export default ResetPasswordScreen;
