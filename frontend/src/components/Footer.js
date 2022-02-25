@@ -3,7 +3,6 @@ import { Container, Row, Col } from 'react-bootstrap';
 import styled from "styled-components";
 
 const SignatureWrapper = styled.div`
-    // text-align: center;
     padding: 0 0 .5rem 0;
     font-size: .87rem;
     opacity: .4;
@@ -28,7 +27,7 @@ const Footer = () => {
                     <Col>
                         <Row><h5>Contact</h5></Row>
                         <Row className='py-n3'><p><i className='fas fa-phone'></i>: +233 20 904 4823</p></Row>
-                        <Row className='mt-n3'><p><i className='fas fa-envelope'></i>: <a href='mailto:anansesm@gmail.com'>anansesm@gmail.com</a></p></Row>
+                        <Row className='mt-n3'><p><i className='fas fa-envelope'></i>: <a href='mailto:ananses3mwear@gmail.com'>anansesm@gmail.com</a></p></Row>
                     </Col>
                 </Row>
                 <Row className='mt-n2'>
