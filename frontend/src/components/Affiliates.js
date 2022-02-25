@@ -8,9 +8,7 @@ const AffiliatesMainWrapper = styled.div`
     padding: 3vw 0px 3vw 0px;
 `;
 
-const AffiliatesContentWrapper = styled.div`
-    // display: flex;
-`;
+const AffiliatesContentWrapper = styled.div``;
 
 const Affiliates = () => {
     return (
