@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import styled from "styled-components";
-// import breakpoint from '../breakpoints';
 import LineMenu from './LineMenu';
 
 const ServicesMainWrapper = styled.div`
@@ -9,9 +8,7 @@ const ServicesMainWrapper = styled.div`
     padding: 3vw 0px 3vw 0px;
 `;
 
-const ServicesContentWrapper = styled.div`
-    // display: flex;
-`;
+const ServicesContentWrapper = styled.div``;
 
 const Services = () => {
     return (
