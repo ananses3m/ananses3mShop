@@ -3,17 +3,8 @@ import '../index.css';
 import styled from "styled-components";
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import breakpoint from '../breakpoints';
-// import BuildingFit from '../experiences/BuildingFit';
-// import FlexSim from '../experiences/FlexSim';
-// import LDSChurch from '../experiences/LDSChurch';
-// import BYUIAudio from '../experiences/BYUIAudio';
-// import ExcessEra from '../experiences/ExcessEra';
-// import Rogmoth from '../experiences/Rogmoth';
-// import Volunteer from '../experiences/Volunteer';
 
-const PanelContent = styled.div`
-    // text-align: center;
-`;
+const PanelContent = styled.div``;
 
 const TabContent = styled.p`
     @media only screen and ${breakpoint.device.xs}{
