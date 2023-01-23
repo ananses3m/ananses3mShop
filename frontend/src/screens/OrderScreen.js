@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { PayPalButton } from 'react-paypal-button-v2';
 import { Link } from 'react-router-dom';
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Card, Button, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -12,6 +12,7 @@ import { ORDER_PAY_RESET, ORDER_DELIVER_RESET } from '../constants/orderConstant
 const OrderScreen = ({ match, history }) => {
     const orderId = match.params.id;
 
+    const [momoNumber, setMomoNumber] = useState('');
     const [sdkReady, setSdkReady] = useState(false);
 
     const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const OrderScreen = ({ match, history }) => {
     }
 
     useEffect(() => {
-        if(!userInfo) {
+        if (!userInfo) {
             history.push('/login');
         }
         const addPaypalScript = async () => {
@@ -77,6 +78,21 @@ const OrderScreen = ({ match, history }) => {
         dispatch(deliverOrder(order))
     }
 
+    const submitHandler = async (e) => {
+        // e.preventDefault();
+        // dispatch(saveShippingAddress({ address, city, postalCode, country }));
+        // history.push('/payment');
+
+        const momoInfo = {
+            order_id: order._id,
+            payerNumber: momoNumber,
+            reqAmount: order.totalPrice
+        }
+        const { data } = await axios.post('/api/config/momo', momoInfo);
+
+        console.log('Front Momo Response: ', data)
+    }
+
     return loading ? <Loader /> : error ? <Message variant='danger'>{error}</Message> : <>
         <h1>Order {order._id}</h1>
         <Row>
@@ -92,7 +108,7 @@ const OrderScreen = ({ match, history }) => {
                             {order.shippingAddress.postalCode},{' '}
                             {order.shippingAddress.country}
                         </p>
-                        {order.isDelivered ? <Message variant='success'>Delivered on {order.deliveredAt.substring(0,10)}</Message> : <Message variant='danger'>Not Delivered</Message>}
+                        {order.isDelivered ? <Message variant='success'>Delivered on {order.deliveredAt.substring(0, 10)}</Message> : <Message variant='danger'>Not Delivered</Message>}
                     </ListGroup.Item>
 
                     <ListGroup.Item>
@@ -101,7 +117,7 @@ const OrderScreen = ({ match, history }) => {
                             <strong>Method: </strong>
                             {order.paymentMethod}
                         </p>
-                        {order.isPaid ? <Message variant='success'>Paid on {order.paidAt.substring(0,10)}</Message> : <Message variant='danger'>Not Paid</Message>}
+                        {order.isPaid ? <Message variant='success'>Paid on {order.paidAt.substring(0, 10)}</Message> : <Message variant='danger'>Not Paid</Message>}
                     </ListGroup.Item>
 
                     <ListGroup.Item>
@@ -159,9 +175,29 @@ const OrderScreen = ({ match, history }) => {
                         {!order.isPaid && (
                             <ListGroup.Item>
                                 {loadingPay && <Loader />}
-                                {!sdkReady ? <Loader /> : (
+                                {!sdkReady ? <Loader /> : order.paymentMethod === 'MobileMoney' ? (
+                                    <Form onSubmit={submitHandler}>
+                                        <Form.Group controlId='momoNumber'>
+                                            <Form.Label><h5>Momo number</h5></Form.Label>
+                                            <Form.Control type='text' placeholder='Enter momo number' value={momoNumber} onChange={(e) => setMomoNumber(e.target.value)}></Form.Control>
+                                        </Form.Group>
+                                        <Button className='w-100' type='submit' variant='primary'>Pay with MOMO</Button>
+                                    </Form>
+                                ) : (
                                     <PayPalButton amount={order.totalPrice} onSuccess={successPaymentHandler} />
                                 )}
+                                {/* {!order.paymentMethod === 'MobileMoney' ? '' : (
+                                    <Form onSubmit={submitHandler}>
+                                        <Form.Group controlId='momoNumber'>
+                                            <Form.Label>Momo number</Form.Label>
+                                            <Form.Control type='text' placeholder='Enter momo number' value={momoNumber} onChange={(e) => setMomoNumber(e.target.value)}></Form.Control>
+                                        </Form.Group>
+                                        <Form.Group controlId='orderTotal'>
+                                            <Form.Control type='text' hidden value={order.totalPrice} readOnly ></Form.Control>
+                                        </Form.Group>
+                                        <Button className='w-100' type='submit' variant='primary'>Pay with MOMO</Button>
+                                    </Form>
+                                )} */}
                             </ListGroup.Item>
                         )}
                         {loadingDeliver && <Loader />}
